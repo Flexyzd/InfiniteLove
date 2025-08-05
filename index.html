@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -183,7 +182,7 @@
 </head>
 <body>
   <div class="counter-box">
-    <h2>Seninle İlk Günden Bu Yana Geçeirdiğimiz Süre</h2>
+    <h2>Seninle İlk Günden Bu Yana Geçirdiğimiz Süre</h2>
     <div class="days" id="dayCount">0 gün</div>
   </div>
 
@@ -196,9 +195,14 @@
   </div>
 
   <div class="music-control">
-    <button onclick="toggleMusic()" id="musicBtn">Müziği Başlat</button>
+    <button onclick="toggleMusic()" id="musicBtn">Durdur</button>
   </div>
-  <iframe id="musicPlayer" width="0" height="0" src="https://www.youtube.com/embed/B2jIK0vlDKE?enablejsapi=1" frameborder="0" allow="autoplay"></iframe>
+  <iframe id="musicPlayer"
+    width="0"
+    height="0"
+    src="https://www.youtube.com/embed/fExyfJlgkb4?enablejsapi=1&start=48&autoplay=1"
+    frameborder="0"
+    allow="autoplay"></iframe>
 
   <div id="previewModal" class="preview-modal" onclick="closePreview()">
     <img id="previewImage" src="" alt="Preview">
@@ -229,17 +233,25 @@
 
     let player;
     function onYouTubeIframeAPIReady() {
-      player = new YT.Player('musicPlayer');
+      player = new YT.Player('musicPlayer', {
+        events: {
+          'onReady': (event) => {
+            event.target.seekTo(48);
+            event.target.playVideo();
+            isPlaying = true;
+          }
+        }
+      });
     }
     let isPlaying = false;
     function toggleMusic() {
       if (player && isPlaying) {
         player.pauseVideo();
-        document.getElementById('musicBtn').textContent = 'Müziği Başlat';
+        document.getElementById('musicBtn').textContent = 'Başlat';
         isPlaying = false;
       } else if (player) {
         player.playVideo();
-        document.getElementById('musicBtn').textContent = 'Müziği Durdur';
+        document.getElementById('musicBtn').textContent = 'Durdur';
         isPlaying = true;
       }
     }
