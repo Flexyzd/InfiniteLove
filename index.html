@@ -1,269 +1,304 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sevgi Sitesi</title>
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f7f7f7;
-}
+  <meta charset="UTF-8" />
+  <!-- Ekran boyutuna göre responsive görünmesi için -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Geçen Gün Sayısı</title>
 
-/* Şifre ekranı */
-#passwordScreen {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: #ff4d6d;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  color: white;
-  z-index: 9999;
-}
-#passwordInput {
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  text-align: center;
-}
+  <style>
+    /* ---- GENEL SAYFA TASARIMI ---- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #ffc0cb, #ffe6eb); /* Pembe tonlarda degrade arka plan */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow: auto; /* İçerik taşarsa kaydırma yapabilsin */
+    }
 
-/* Gün sayısı ve buton */
-#days {
-  text-align: center;
-  font-size: 20px;
-  margin: 20px 0;
-}
-#addButton {
-  display: block;
-  margin: 0 auto 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  background: #ff4d6d;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
+    /* ---- GÜN SAYACI KUTUSU ---- */
+    .counter-box {
+      background-color: rgba(255, 255, 255, 0.25); /* Şeffaf beyaz arka plan */
+      border-radius: 20px;
+      padding: 40px 60px;
+      text-align: center;
+      backdrop-filter: blur(12px); /* Cam efekti */
+      box-shadow: 0 6px 18px rgba(255, 105, 180, 0.3); /* Hafif gölge */
+      color: #b4004e;
+      margin-top: 20px;
+    }
+    .counter-box h2 {
+      font-size: 28px;
+      margin-bottom: 12px;
+      color: #ff69b4;
+    }
+    .counter-box .days {
+      font-size: 54px;
+      font-weight: bold;
+      color: #c2185b;
+    }
 
-/* Fotoğraf galerisi */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  padding: 10px;
-}
-.gallery img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  cursor: pointer;
-}
+    /* ---- FOTOĞRAF KUTUSU ---- */
+    .memory {
+      position: relative;
+      width: 90%;
+      max-width: 600px;
+      margin: 20px auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+    }
+    .memory img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .memory .text {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(to top, rgba(255, 105, 180, 0.6), transparent);
+      color: white;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .memory .text h3 {
+      margin: 0 0 5px 0;
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    .memory .text p {
+      margin: 0;
+      font-size: 18px;
+      font-weight: bold;
+    }
 
-/* Lightbox */
-#lightbox {
-  display: none;
-  position: fixed;
-  top:0; left:0; width:100%; height:100%;
-  background: rgba(0,0,0,0.8);
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 9998;
-}
-#lightbox img {
-  max-width: 90%;
-  max-height: 70%;
-  border-radius: 10px;
-}
-.lightbox-nav {
-  display: flex;
-  justify-content: space-between;
-  width: 80%;
-  margin-top: 10px;
-}
-.lightbox-nav button {
-  background: #ff4d6d;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
+    /* ---- KALP ANİMASYONU ---- */
+    .heart {
+      width: 20px;
+      height: 20px;
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #ff69b4;
+      clip-path: polygon(
+        50% 0%, 61% 10%, 72% 21%, 83% 32%, 94% 43%, 100% 55%,
+        94% 67%, 83% 78%, 72% 89%, 61% 100%, 50% 90%, 39% 100%,
+        28% 89%, 17% 78%, 6% 67%, 0% 55%, 6% 43%, 17% 32%,
+        28% 21%, 39% 10%
+      );
+      animation: floatHeart 5s linear forwards;
+      opacity: 0.8;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    @keyframes floatHeart {
+      0% {
+        transform: translateX(-50%) translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(-50%) translateY(-100vh) scale(1.5);
+        opacity: 0;
+      }
+    }
 
-/* Not ekleme alanı */
-#addPanel {
-  display: none;
-  padding: 15px;
-  background: white;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 400px;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-  z-index: 9999;
-}
-#addPanel textarea {
-  width: 100%;
-  height: 60px;
-  margin-top: 10px;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-#addPanel input {
-  margin-top: 10px;
-}
-#addPanel button {
-  margin-top: 10px;
-  padding: 8px 12px;
-  background: #ff4d6d;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-</style>
+    /* ---- MÜZİK BUTONU ---- */
+    .music-control {
+      margin: 20px;
+      text-align: center;
+    }
+    .music-control button {
+      background-color: #ff69b4;
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+    }
+    .music-control button:hover {
+      background-color: #e0559e;
+    }
+    iframe#musicPlayer {
+      display: none; /* YouTube iframe gizleniyor */
+    }
+
+    /* ---- FOTOĞRAF ÖNİZLEME MODALI ---- */
+    .preview-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.85);
+      z-index: 99999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      cursor: zoom-out;
+    }
+    .preview-modal img {
+      max-width: 90%;
+      max-height: 80vh;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+    .preview-text {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      color: white;
+      text-align: left;
+      max-width: 80%;
+    }
+    .preview-text h3 {
+      margin: 0;
+      font-size: 18px;
+      opacity: 0.8;
+    }
+    .preview-text p {
+      margin: 5px 0 0 0;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    /* ---- TELEFON OPTİMİZASYONU ---- */
+    @media (max-width: 480px) {
+      .preview-text {
+        bottom: 20px;
+        left: 10px;
+        font-size: 14px;
+        padding: 8px;
+        max-width: 90%;
+      }
+      .preview-text h3 {
+        font-size: 13px;
+      }
+      .preview-text p {
+        font-size: 15px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<!-- Şifre ekranı -->
-<div id="passwordScreen">
-  <h2>Şifreyi Gir</h2>
-  <input type="password" id="passwordInput" placeholder="****">
-  <button onclick="checkPassword()">Giriş Yap</button>
-</div>
-
-<!-- İçerik -->
-<div id="mainContent" style="display:none;">
-  <div id="days"></div>
-  <button id="addButton" onclick="toggleAddPanel()">📸 Fotoğraf & Not Ekle</button>
-
-  <!-- Galeri -->
-  <div class="gallery" id="gallery"></div>
-</div>
-
-<!-- Lightbox -->
-<div id="lightbox">
-  <img id="lightboxImg">
-  <div class="lightbox-nav">
-    <button onclick="prevImage()">⬅️</button>
-    <button onclick="closeLightbox()">Kapat</button>
-    <button onclick="nextImage()">➡️</button>
+  <!-- Gün sayacı -->
+  <div class="counter-box">
+    <h2>Seninle İlk Günden Bu Yana Geçirdiğimiz Süre</h2>
+    <div class="days" id="dayCount">0 gün</div>
   </div>
-</div>
 
-<!-- Fotoğraf & not ekleme paneli -->
-<div id="addPanel">
-  <input type="file" accept="image/*" id="photoInput">
-  <textarea id="noteInput" placeholder="Notunuzu yazın..."></textarea>
-  <button onclick="savePhotoNote()">Kaydet</button>
-  <button onclick="toggleAddPanel()">Kapat</button>
-</div>
+  <!-- Fotoğraf ve açıklaması -->
+  <div class="memory" onclick="openPreview('IMG_8615.jpeg', '2 Eylül 2024', 'İlk Yaz Tatilimizi Hatırlıyormusun Bebeğim🤎')">
+    <img src="IMG_3466.jpeg" alt="İlk tatilimiz">
+    <div class="text">
+      <h3>16 Mart 2024</h3>
+      <p>Bugünden Sonra Heşey Çok Değişti Ve Bir Birimizi Çok İyi Tanımaya Başladık 😏 </p>
+    </div>
+    
+  </div>
+  <div class="memory" onclick="openPreview('IMG_8615.jpeg', '2 Eylül 2024', 'İlk Yaz Tatilimizi Hatırlıyormusun Bebeğim🤎')">
+    <img src="IMG_8615.jpeg" alt="İlk tatilimiz">
+    <div class="text">
+      <h3>2 Eylül 2024</h3>
+      <p>İlk Yaz Tatilimizi Hatırlıyormusun Bebeğim 🤎</p>
+    </div>
+  </div>
 
-<!-- Müzik -->
-<audio id="bgMusic" loop>
-  <source src="https://www.youtube.com/embed/fExyfJlgkb4?start=48" type="audio/mp3">
-</audio>
+  <!-- Müzik kontrol butonu -->
+  <div class="music-control">
+    <button onclick="toggleMusic()" id="musicBtn">Durdur</button>
+  </div>
 
-<script>
-let photos = JSON.parse(localStorage.getItem("photos")) || [];
-let currentIndex = 0;
+  <!-- Arka planda çalacak YouTube müzik -->
+  <iframe id="musicPlayer"
+    width="0"
+    height="0"
+    src="https://www.youtube.com/embed/fExyfJlgkb4?enablejsapi=1&start=48&autoplay=1"
+    frameborder="0"
+    allow="autoplay"></iframe>
 
-// Şifre kontrolü
-function checkPassword(){
-  const pass = document.getElementById("passwordInput").value;
-  if(pass === "1111"){
-    document.getElementById("passwordScreen").style.display = "none";
-    document.getElementById("mainContent").style.display = "block";
-    playMusic();
-    renderGallery();
-    updateDays();
-  } else {
-    alert("Yanlış şifre!");
-  }
-}
+  <!-- Fotoğraf önizleme modalı -->
+  <div id="previewModal" class="preview-modal" onclick="closePreview()">
+    <img id="previewImage" src="" alt="Preview">
+    <div class="preview-text">
+      <h3 id="previewDate"></h3>
+      <p id="previewCaption"></p>
+    </div>
+  </div>
 
-// Gün sayısı
-function updateDays(){
-  const startDate = new Date("2021-11-11");
-  const today = new Date();
-  const diffTime = Math.abs(today - startDate);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  document.getElementById("days").textContent = `${diffDays} gündür birlikteyiz ❤️`;
-}
+  <script>
+    /* ---- GÜN SAYACINI HESAPLAMA ---- */
+    const startDate = new Date('2021-11-11');
+    function updateDayCount() {
+      const today = new Date();
+      const diffTime = today - startDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      document.getElementById('dayCount').textContent = `${diffDays} gün`;
+    }
+    updateDayCount();
 
-// Müzik başlat
-function playMusic(){
-  let audio = document.getElementById("bgMusic");
-  audio.play().catch(()=>{ console.log("Otomatik oynatma engellendi"); });
-}
+    /* ---- KALP ANİMASYONU OLUŞTURMA ---- */
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * 100 + 'vw'; // Rastgele yatay konum
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000); // 5 sn sonra sil
+    }
+    setInterval(createHeart, 300); // Her 0.3 saniyede bir kalp ekle
 
-// Panel aç/kapat
-function toggleAddPanel(){
-  const panel = document.getElementById("addPanel");
-  panel.style.display = (panel.style.display === "block") ? "none" : "block";
-}
+    /* ---- MÜZİK KONTROL ---- */
+    let player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('musicPlayer', {
+        events: {
+          'onReady': (event) => {
+            event.target.seekTo(48); // 48. saniyeden başlat
+            event.target.playVideo();
+            isPlaying = true;
+          }
+        }
+      });
+    }
+    let isPlaying = false;
+    function toggleMusic() {
+      if (player && isPlaying) {
+        player.pauseVideo();
+        document.getElementById('musicBtn').textContent = 'Başlat';
+        isPlaying = false;
+      } else if (player) {
+        player.playVideo();
+        document.getElementById('musicBtn').textContent = 'Durdur';
+        isPlaying = true;
+      }
+    }
+    // YouTube API yükleme
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
 
-// Fotoğraf & not kaydet
-function savePhotoNote(){
-  const fileInput = document.getElementById("photoInput");
-  const note = document.getElementById("noteInput").value;
-  if(fileInput.files.length === 0){ alert("Fotoğraf seçin!"); return; }
-
-  const reader = new FileReader();
-  reader.onload = function(e){
-    photos.push({img: e.target.result, note: note});
-    localStorage.setItem("photos", JSON.stringify(photos));
-    renderGallery();
-    toggleAddPanel();
-  }
-  reader.readAsDataURL(fileInput.files[0]);
-}
-
-// Galeri oluştur
-function renderGallery(){
-  const gallery = document.getElementById("gallery");
-  gallery.innerHTML = "";
-  photos.forEach((p, index) => {
-    let img = document.createElement("img");
-    img.src = p.img;
-    img.onclick = () => openLightbox(index);
-    gallery.appendChild(img);
-  });
-}
-
-// Lightbox aç
-function openLightbox(index){
-  currentIndex = index;
-  document.getElementById("lightboxImg").src = photos[index].img;
-  document.getElementById("lightbox").style.display = "flex";
-}
-
-// Lightbox kapat
-function closeLightbox(){
-  document.getElementById("lightbox").style.display = "none";
-}
-
-// Sonraki foto
-function nextImage(){
-  currentIndex = (currentIndex + 1) % photos.length;
-  openLightbox(currentIndex);
-}
-
-// Önceki foto
-function prevImage(){
-  currentIndex = (currentIndex - 1 + photos.length) % photos.length;
-  openLightbox(currentIndex);
-}
-</script>
-
+    /* ---- FOTOĞRAF ÖNİZLEME ---- */
+    function openPreview(src, date, caption) {
+      document.getElementById('previewImage').src = src;
+      document.getElementById('previewDate').textContent = date;
+      document.getElementById('previewCaption').textContent = caption;
+      document.getElementById('previewModal').style.display = 'flex';
+    }
+    function closePreview() {
+      document.getElementById('previewModal').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
