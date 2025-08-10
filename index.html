@@ -18,6 +18,13 @@
             flex-direction: column;
             height: 100vh;
             overflow: auto;
+            transition: filter 0.5s ease-in-out; /* Bulanıklık geçişi için animasyon */
+        }
+        
+        /* Şifre girilmediği zaman fotoğrafları bulanıklaştırır */
+        body.blurred img {
+            filter: blur(10px);
+            transition: filter 0.5s ease-in-out;
         }
 
         /* ---- GÜN SAYACI KUTUSU ---- */
@@ -45,10 +52,10 @@
         /* ---- YENİ ANILAR KAPSAYICI (GRID) ---- */
         #memory-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Yan yana 200px'den küçük olmasın, sığana kadar dizsin */
-            gap: 20px; /* Anılar arasındaki boşluk */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
             width: 90%;
-            max-width: 1000px; /* Sayfanın maksimum genişliği */
+            max-width: 1000px;
             margin: 20px auto 40px auto;
         }
 
@@ -60,12 +67,12 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             cursor: pointer;
             width: 100%;
-            height: 250px; /* Sabit bir yükseklik vererek kareye yakın bir görüntü elde ettim */
+            height: 250px;
         }
         .memory img {
             width: 100%;
-            height: 100%; /* Kutuya tam sığsın */
-            object-fit: cover; /* Fotoğrafı orantılı şekilde keserek doldursun */
+            height: 100%;
+            object-fit: cover;
             display: block;
         }
         .memory .text {
@@ -173,189 +180,3 @@
             max-width: 80%;
         }
         .preview-text h3 {
-            margin: 0;
-            font-size: 18px;
-            opacity: 0.8;
-        }
-        .preview-text p {
-            margin: 5px 0 0 0;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        /* ---- TELEFON OPTİMİZASYONU ---- */
-        @media (max-width: 480px) {
-            .preview-text {
-                bottom: 20px;
-                left: 10px;
-                font-size: 14px;
-                padding: 8px;
-                max-width: 90%;
-            }
-            .preview-text h3 {
-                font-size: 13px;
-            }
-            .preview-text p {
-                font-size: 15px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <div id="passwordOverlay" style="
-        position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; z-index:1000000; flex-direction:column; color:white;
-    ">
-        <h2 style="margin:0 0 12px 0;">Siteye Giriş</h2>
-        <input id="passwordInput" type="password" placeholder="Şifreyi gir (Çıkma Tarihimiz)" style="padding:10px; font-size:16px; border-radius:8px; border:none; text-align:center;">
-        <div style="height:12px"></div>
-        <button onclick="checkPassword()" style="background:#ff69b4;color:white;border:none;padding:10px 16px;border-radius:10px;cursor:pointer;">Giriş Yap</button>
-    </div>
-
-    <div class="counter-box">
-        <h2>Seninle İlk Günden Bu Yana Geçirdiğimiz Süre</h2>
-        <div class="days" id="dayCount">0 gün</div>
-    </div>
-    
-    <div id="memory-grid">
-        <div class="memory" onclick="openPreview('IMG_3466.jpeg', '16 Mart 2024', 'Bugünden Sonra Her Şey Çok Değişti Ve Birbirimizi Çok İyi Tanımaya Başladık 😏')">
-            <img src="IMG_3466.jpeg" alt="İlk tatilimiz">
-            <div class="text">
-                <h3>16 Mart 2024</h3>
-                <p>Bugünden Sonra Her Şey Çok Değişti Ve Birbirimizi Çok İyi Tanımaya Başladık 😏 </p>
-            </div>
-        </div>
-        <div class="memory" onclick="openPreview('IMG_8615.jpeg', '2 Eylül 2024', 'İlk Yaz Tatilimizi Hatırlıyor musun Bebeğim 🤎')">
-            <img src="IMG_8615.jpeg" alt="İlk tatilimiz">
-            <div class="text">
-                <h3>2 Eylül 2024</h3>
-                <p>İlk Yaz Tatilimizi Hatırlıyor musun Bebeğim 🤎</p>
-            </div>
-        </div>
-        <div class="memory" onclick="openPreview('IMG_2218.JPEG', '23 Aralık 2023 15:18', 'Sana Bisiklet Sürmeyi öğrettiğim Gün')">
-            <img src="IMG_2218.JPEG" alt="Bisiklet sürme anısı">
-            <div class="text">
-                <h3>23 Aralık 2023 15:18</h3>
-                <p>Sana Bisiklet Sürmeyi öğrettiğim Gün</p>
-            </div>
-        </div>
-        <div class="memory" onclick="openPreview('c234aa18-98bd-46ca-93f7-face2d072044.JPEG', '28 Nisan 2024 01:19', 'Bu Açıklamayı Sana Bırakıyorum Wp yaz')">
-            <img src="c234aa18-98bd-46ca-93f7-face2d072044.JPEG" alt="Anı fotoğrafı">
-            <div class="text">
-                <h3>28 Nisan 2024 01:19</h3>
-                <p>Bu Açıklamayı Sana Bırakıyorum Wp yaz</p>
-            </div>
-        </div>
-        <div class="memory" onclick="openPreview('874e8d68-d4bd-4961-9ea2-7cf3fcc039e2.JPEG', '28 Nisan 2024 01:19', 'Bunu da sana bıraktım')">
-            <img src="874e8d68-d4bd-4961-9ea2-7cf3fcc039e2.JPEG" alt="Anı fotoğrafı">
-            <div class="text">
-                <h3>28 Nisan 2024 01:19</h3>
-                <p>Bunu da sana bıraktım</p>
-            </div>
-        </div>
-        <div class="memory" onclick="openPreview('IMG_6182.JPEG', '1 Haziran 2024 14:53', 'İlk Pikniğimiz')">
-            <img src="IMG_6182.JPEG" alt="İlk pikniğimiz">
-            <div class="text">
-                <h3>1 Haziran 2024 14:53</h3>
-                <p>İlk Pikniğimiz</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="music-control">
-        <button onclick="toggleMusic()" id="musicBtn">Durdur</button>
-    </div>
-
-    <iframe id="musicPlayer"
-        width="0"
-        height="0"
-        src="https://www.youtube.com/embed/fExyfJlgkb4?enablejsapi=1&start=48"
-        frameborder="0"
-        allow="autoplay"></iframe>
-
-    <div id="previewModal" class="preview-modal" onclick="closePreview()">
-        <img id="previewImage" src="" alt="Preview">
-        <div class="preview-text">
-            <h3 id="previewDate"></h3>
-            <p id="previewCaption"></p>
-        </div>
-    </div>
-
-    <script>
-        /* ---- GÜN SAYACINI HESAPLAMA ---- */
-        const startDate = new Date('2021-11-11');
-        function updateDayCount() {
-            const today = new Date();
-            const diffTime = today - startDate;
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            document.getElementById('dayCount').textContent = `${diffDays} gün`;
-        }
-        updateDayCount();
-
-        /* ---- KALP ANİMASYONU OLUŞTURMA ---- */
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.style.left = Math.random() * 100 + 'vw';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 5000);
-        }
-        setInterval(createHeart, 300);
-
-        /* ---- MÜZİK KONTROL ---- */
-        let player;
-        let isPlaying = false;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('musicPlayer', {
-                events: {
-                    'onReady': (event) => {}
-                }
-            });
-        }
-        function toggleMusic() {
-            const musicBtn = document.getElementById('musicBtn');
-            if (player && isPlaying) {
-                player.pauseVideo();
-                musicBtn.textContent = 'Başlat';
-                isPlaying = false;
-            } else if (player) {
-                player.playVideo();
-                musicBtn.textContent = 'Durdur';
-                isPlaying = true;
-            }
-        }
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        document.body.appendChild(tag);
-
-        /* ---- FOTOĞRAF ÖNİZLEME ---- */
-        function openPreview(src, date, caption) {
-            document.getElementById('previewImage').src = src;
-            document.getElementById('previewDate').textContent = date;
-            document.getElementById('previewCaption').textContent = caption;
-            document.getElementById('previewModal').style.display = 'flex';
-        }
-        function closePreview() {
-            document.getElementById('previewModal').style.display = 'none';
-        }
-
-        /* ---- ŞİFRE KONTROLÜ ---- */
-        function checkPassword() {
-            const val = document.getElementById('passwordInput').value;
-            if (val === '1111') {
-                document.getElementById('passwordOverlay').style.display = 'none';
-                if (player) {
-                    try {
-                        player.seekTo(48);
-                        player.playVideo();
-                        isPlaying = true;
-                        document.getElementById('musicBtn').textContent = 'Durdur';
-                    } catch(e){ console.log(e); }
-                }
-            } else {
-                alert('Şifre yanlış!');
-            }
-        }
-    </script>
-</body>
-</html>
