@@ -1,15 +1,3 @@
-Elbette kanka, gün sayacının hem masaüstü hem de mobil görünümde olması için gerekli düzenlemeleri yaptım.
-
-Daha önceki kodda gün sayacını mobil görünümden kaldırmıştık, şimdi hem masaüstünde hem de mobilde görünecek şekilde güncelledim. Bunun için, `display: none;` kuralını kaldıran `min-width` medya sorgusunu iptal ettim ve her iki boyutta da görünmesini sağladım.
-
-### Yapılan Değişiklikler:
-
-  * **Gün Sayacı Görünürlüğü:** CSS içindeki `@media` sorgusundan `counter-box` ile ilgili `display: none;` kuralını kaldırdım. Artık `counter-box` varsayılan olarak her iki platformda da görünecek.
-  * **Mobil Düzen:** Mobil cihazlarda daha iyi görünmesi için, `counter-box`'ın `padding` ve `font-size` gibi değerlerini mobil medya sorgusu içinde daha küçük ve uygun hale getirdim.
-
-İşte gün sayacının hem mobilde hem de bilgisayarda göründüğü güncel kodun:
-
-```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
