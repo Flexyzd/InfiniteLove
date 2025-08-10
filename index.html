@@ -18,7 +18,7 @@
             flex-direction: column;
             height: 100vh;
             overflow: auto;
-            transition: filter 0.5s ease-in-out; /* Bulanıklık geçişi için animasyon */
+            transition: filter 0.5s ease-in-out;
         }
         
         /* Şifre girilmediği zaman fotoğrafları bulanıklaştırır */
@@ -37,6 +37,11 @@
             box-shadow: 0 6px 18px rgba(255, 105, 180, 0.3);
             color: #b4004e;
             margin-top: 20px;
+            z-index: 10;
+            /* Yeni eklenen esnek kutu özellikleri */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .counter-box h2 {
             font-size: 28px;
@@ -47,6 +52,27 @@
             font-size: 54px;
             font-weight: bold;
             color: #c2185b;
+        }
+
+        /* ---- MÜZİK BUTONU ---- */
+        .music-control button {
+            background-color: #ff69b4;
+            border: none;
+            color: white;
+            padding: 8px 30px; /* Yeni boyutlandırma */
+            font-size: 14px; /* Yeni yazı boyutu */
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+            margin-top: 15px; /* Yeni üst boşluk */
+        }
+        .music-control button:hover {
+            background-color: #e0559e;
+        }
+
+        iframe#musicPlayer {
+            display: none;
         }
 
         /* ---- YENİ ANILAR KAPSAYICI (GRID) ---- */
@@ -128,29 +154,6 @@
             }
         }
 
-        /* ---- MÜZİK BUTONU ---- */
-        .music-control {
-            margin: 20px;
-            text-align: center;
-        }
-        .music-control button {
-            background-color: #ff69b4;
-            border: none;
-            color: white;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: background-color 0.3s;
-        }
-        .music-control button:hover {
-            background-color: #e0559e;
-        }
-        iframe#musicPlayer {
-            display: none;
-        }
-
         /* ---- FOTOĞRAF ÖNİZLEME MODALI ---- */
         .preview-modal {
             display: none;
@@ -223,19 +226,8 @@
                 font-size: 18px;
             }
             
-            .music-control {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                z-index: 1000;
-                background: linear-gradient(to top, rgba(255, 192, 203, 0.9), rgba(255, 230, 235, 0.9));
-                padding: 10px 0;
-                box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-            }
             .music-control button {
-                width: calc(100% - 40px);
-                margin: 0 20px;
+                width: calc(100% - 40px); /* Eski genişlik ayarı kaldırıldı, artık direkt `counter-box` içinde ortalanıyor */
             }
 
             .preview-text {
@@ -266,6 +258,9 @@
     <div class="counter-box">
         <h2>Seninle İlk Günden Bu Yana Geçirdiğimiz Süre</h2>
         <div class="days" id="dayCount">0 gün</div>
+        <div class="music-control">
+            <button onclick="toggleMusic()" id="musicBtn">Durdur</button>
+        </div>
     </div>
     
     <div id="memory-grid">
@@ -311,10 +306,6 @@
                 <p>İlk Pikniğimiz</p>
             </div>
         </div>
-    </div>
-
-    <div class="music-control">
-        <button onclick="toggleMusic()" id="musicBtn">Durdur</button>
     </div>
 
     <iframe id="musicPlayer"
@@ -412,4 +403,3 @@
     </script>
 </body>
 </html>
-```
