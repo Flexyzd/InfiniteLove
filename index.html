@@ -190,20 +190,53 @@
             font-weight: bold;
         }
 
-        /* ---- TELEFON OPTİMİZASYONU ---- */
-        @media (max-width: 480px) {
+        /* ---- MOBİL OPTİMİZASYONU ---- */
+        @media (max-width: 768px) {
+            body {
+                justify-content: flex-start; /* İçeriği yukarı hizala */
+            }
+
+            .counter-box {
+                display: none; /* Telefonlarda sayaç kutusunu gizle */
+            }
+
+            #memory-grid {
+                grid-template-columns: 1fr; /* Fotoğrafları tek sütun haline getir */
+                width: 95%; /* Genişliği artır */
+                margin-top: 20px;
+            }
+            .memory {
+                height: 300px; /* Telefon için biraz daha yüksek yap */
+            }
+            .memory .text h3 {
+                font-size: 16px;
+            }
+            .memory .text p {
+                font-size: 18px;
+            }
+            
+            .music-control {
+                position: sticky; /* Butonu aşağıda sabitle */
+                bottom: 10px;
+                width: 100%;
+                z-index: 1000;
+                margin: 0;
+            }
+            .music-control button {
+                width: calc(100% - 40px); /* Ekranı doldursun */
+                margin: 10px 20px;
+            }
+
             .preview-text {
                 bottom: 20px;
                 left: 10px;
-                font-size: 14px;
-                padding: 8px;
                 max-width: 90%;
             }
             .preview-text h3 {
-                font-size: 13px;
+                font-size: 14px;
             }
             .preview-text p {
-                font-size: 15px;
+                font-size: 16px;
             }
         }
     </style>
@@ -351,7 +384,7 @@
             const val = document.getElementById('passwordInput').value;
             if (val === '1111') {
                 document.getElementById('passwordOverlay').style.display = 'none';
-                document.body.classList.remove('blurred'); // Şifre doğruysa bulanıklığı kaldır
+                document.body.classList.remove('blurred');
 
                 if (player) {
                     try {
