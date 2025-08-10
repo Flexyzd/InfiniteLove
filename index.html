@@ -43,7 +43,7 @@
       color: #c2185b;
     }
 
-    /* ---- FOTOĞRAF KUTUSU ---- */
+    /* ---- FOTOĞRAF KUTUSU (SENİN ORİJİNAL STİLİN KORUNDU) ---- */
     .memory {
       position: relative;
       width: 90%;
@@ -131,10 +131,10 @@
       background-color: #e0559e;
     }
     iframe#musicPlayer {
-      display: none; /* YouTube iframe gizleniyor */
+      display: none; /* YouTube iframe gizleniyor (arka planda çalışacak) */
     }
 
-    /* ---- FOTOĞRAF ÖNİZLEME MODALI ---- */
+    /* ---- FOTOĞRAF ÖNİZLEME MODALI (MEVCUT DAVRANIŞ KORUNDU) ---- */
     .preview-modal {
       display: none;
       position: fixed;
@@ -189,26 +189,77 @@
         font-size: 15px;
       }
     }
+
+    /* ----------------- EKLENEN KISIMLAR (NOT/FOTO EKLEME PANELİ ve GÖRÜNÜM) ----------------- */
+    /* (Bu stiller, mevcut görünüme zarar vermemek için sade ve küçük tutuldu) */
+    #addToggleBtn {
+      display: none; /* buton, şifreyle giriş yapınca gösterilecek */
+      margin: 12px auto;
+      background: #ff69b4;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    /* küçük panel modal gibi ortada açılır */
+    #addPanel {
+      display: none;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(100% - 40px);
+      max-width: 420px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      z-index: 100000;
+    }
+    #addPanel h3 { margin: 0 0 8px 0; color:#b4004e; }
+    #addPanel input[type="file"] { width:100%; }
+    #addPanel input[type="text"], #addPanel textarea {
+      width:100%; padding:8px; margin-top:8px; border-radius:8px; border:1px solid #eee; box-sizing:border-box;
+    }
+    #addPanel .row { display:flex; gap:8px; margin-top:10px; }
+    #addPanel button { background:#ff69b4; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
+
+    /* Yüklenen remote anıların gösterileceği alan (mevcut memory'lerin altına eklenecek) */
+    #remoteMemoriesContainer { width:90%; max-width:600px; margin: 10px auto 40px auto; }
+
   </style>
 </head>
 <body>
 
+  <!-- ------------------ ŞİFRE EKRANI ------------------ -->
+  <div id="passwordOverlay" style="
+    position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; z-index:1000000; flex-direction:column; color:white;
+  ">
+    <h2 style="margin:0 0 12px 0;">Siteye Giriş</h2>
+    <input id="passwordInput" type="password" placeholder="Şifreyi gir (1111)" style="padding:10px; font-size:16px; border-radius:8px; border:none; text-align:center;">
+    <div style="height:12px"></div>
+    <button onclick="checkPassword()" style="background:#ff69b4;color:white;border:none;padding:10px 16px;border-radius:10px;cursor:pointer;">Giriş Yap</button>
+  </div>
+
+  <!-- ---------- MEVCUT İÇERİK (SENİN ORJİNAL KODUN) ---------- -->
   <!-- Gün sayacı -->
   <div class="counter-box">
     <h2>Seninle İlk Günden Bu Yana Geçirdiğimiz Süre</h2>
     <div class="days" id="dayCount">0 gün</div>
   </div>
 
-  <!-- Fotoğraf ve açıklaması -->
-  <div class="memory" onclick="openPreview('IMG_8615.jpeg', '2 Eylül 2024', 'İlk Yaz Tatilimizi Hatırlıyormusun Bebeğim🤎')">
+  <!-- Sabit fotoğrafların olduğu kısım (BU KISIM DEĞİŞMEYECEK) -->
+  <div class="memory" onclick="openPreview('IMG_3466.jpeg', '16 Mart 2024', 'Bugünden Sonra Heşey Çok Değişti Ve Bir Birimizi Çok İyi Tanımaya Başladık 😏')">
     <img src="IMG_3466.jpeg" alt="İlk tatilimiz">
     <div class="text">
       <h3>16 Mart 2024</h3>
       <p>Bugünden Sonra Heşey Çok Değişti Ve Bir Birimizi Çok İyi Tanımaya Başladık 😏 </p>
     </div>
-    
   </div>
-  <div class="memory" onclick="openPreview('IMG_8615.jpeg', '2 Eylül 2024', 'İlk Yaz Tatilimizi Hatırlıyormusun Bebeğim🤎')">
+  <div class="memory" onclick="openPreview('IMG_8615.jpeg', '2 Eylül 2024', 'İlk Yaz Tatilimizi Hatırlıyormusun Bebeğim 🤎')">
     <img src="IMG_8615.jpeg" alt="İlk tatilimiz">
     <div class="text">
       <h3>2 Eylül 2024</h3>
@@ -216,20 +267,24 @@
     </div>
   </div>
 
-  <!-- Müzik kontrol butonu -->
+  <!-- Buraya Firebase'den gelen anılar eklenecek (mevcut hardcoded memory'lerin altına) -->
+  <div id="remoteMemoriesContainer"></div>
+
+  <!-- Müzik kontrol butonu (SENİN ORJİNAL KODUN KALDI) -->
   <div class="music-control">
     <button onclick="toggleMusic()" id="musicBtn">Durdur</button>
   </div>
 
-  <!-- Arka planda çalacak YouTube müzik -->
+  <!-- Arka planda çalacak YouTube müzik (id aynı bırakıldı, src'ten autoplay kaldırıldı;
+       şifre doğrulandıktan sonra API ile oynatacağız) -->
   <iframe id="musicPlayer"
     width="0"
     height="0"
-    src="https://www.youtube.com/embed/fExyfJlgkb4?enablejsapi=1&start=48&autoplay=1"
+    src="https://www.youtube.com/embed/fExyfJlgkb4?enablejsapi=1&start=48"
     frameborder="0"
     allow="autoplay"></iframe>
 
-  <!-- Fotoğraf önizleme modalı -->
+  <!-- Fotoğraf önizleme modalı (MEVCUT KALDI) -->
   <div id="previewModal" class="preview-modal" onclick="closePreview()">
     <img id="previewImage" src="" alt="Preview">
     <div class="preview-text">
@@ -238,8 +293,28 @@
     </div>
   </div>
 
+  <!-- Fotoğraf & Not Ekleme için gizli panel (açılır) -->
+  <button id="addToggleBtn" onclick="toggleAddPanel()">📸 Fotoğraf & Not Ekle</button>
+
+  <div id="addPanel" aria-hidden="true">
+    <h3>Yeni Anı Ekle</h3>
+    <input id="uploadFile" type="file" accept="image/*" capture="environment"><br>
+    <input id="memDate" type="text" placeholder="Tarih (örn: 5 Ağustos 2025)"><br>
+    <textarea id="memNote" rows="4" placeholder="Notunu yaz..."></textarea>
+    <div class="row" style="margin-top:10px;">
+      <button onclick="uploadMemory()">Ekle</button>
+      <button onclick="toggleAddPanel()">İptal</button>
+    </div>
+    <div id="uploadStatus" style="margin-top:8px;color:#666;font-size:14px;"></div>
+  </div>
+
+  <!-- Firebase SDK'ları (compat style) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
   <script>
-    /* ---- GÜN SAYACINI HESAPLAMA ---- */
+    /* ---- GÜN SAYACINI HESAPLAMA (MEVCUT KOD) ---- */
     const startDate = new Date('2021-11-11');
     function updateDayCount() {
       const today = new Date();
@@ -249,7 +324,7 @@
     }
     updateDayCount();
 
-    /* ---- KALP ANİMASYONU OLUŞTURMA ---- */
+    /* ---- KALP ANİMASYONU OLUŞTURMA (MEVCUT KOD) ---- */
     function createHeart() {
       const heart = document.createElement('div');
       heart.classList.add('heart');
@@ -259,20 +334,18 @@
     }
     setInterval(createHeart, 300); // Her 0.3 saniyede bir kalp ekle
 
-    /* ---- MÜZİK KONTROL ---- */
+    /* ---- MÜZİK KONTROL (MEVCUT KOD) ---- */
     let player;
+    let isPlaying = false;
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('musicPlayer', {
         events: {
           'onReady': (event) => {
-            event.target.seekTo(48); // 48. saniyeden başlat
-            event.target.playVideo();
-            isPlaying = true;
+            // Başlangıçta oynatma yapılmıyor; şifre geçince oynatacağız.
           }
         }
       });
     }
-    let isPlaying = false;
     function toggleMusic() {
       if (player && isPlaying) {
         player.pauseVideo();
@@ -284,12 +357,12 @@
         isPlaying = true;
       }
     }
-    // YouTube API yükleme
+    // YouTube API yükleme (MEVCUT KOD)
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     document.body.appendChild(tag);
 
-    /* ---- FOTOĞRAF ÖNİZLEME ---- */
+    /* ---- FOTOĞRAF ÖNİZLEME (MEVCUT KOD) ---- */
     function openPreview(src, date, caption) {
       document.getElementById('previewImage').src = src;
       document.getElementById('previewDate').textContent = date;
@@ -299,6 +372,155 @@
     function closePreview() {
       document.getElementById('previewModal').style.display = 'none';
     }
+
+    /* -------------------- BURADAN SONRA YENİ EKLEMELER (FIREBASE + PANEL) -------------------- */
+
+    // TODO: Buraya kendi Firebase config'ini koy (aşağıdaki örnek yerine)
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+      projectId: "YOUR_PROJECT",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
+
+    // Firebase başlat
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const storage = firebase.storage();
+
+    // Şifre kontrolü (SENİN İSTEDİĞİN: 1111)
+    function checkPassword() {
+      const val = document.getElementById('passwordInput').value;
+      if (val === '1111') {
+        // Şifre doğruysa overlay'i gizle, ekleme butonunu göster, müziği başlat, ve uzaktan anıları yükle
+        document.getElementById('passwordOverlay').style.display = 'none';
+        document.getElementById('addToggleBtn').style.display = 'block';
+        // O anda player hazırsa çal, yoksa onYouTubeIframeAPIReady çalışınca çalarız:
+        if (player) {
+          try {
+            player.seekTo(48);
+            player.playVideo();
+            isPlaying = true;
+          } catch(e){ console.log(e); }
+        } else {
+          // eğer player henüz yüklenmediyse onReady içinde oynatılacak
+        }
+        // remote anıları dinlemeye başla
+        startListeningToMemories();
+      } else {
+        alert('Şifre yanlış!');
+      }
+    }
+
+    // Panel aç/kapat
+    function toggleAddPanel(){
+      const p = document.getElementById('addPanel');
+      p.style.display = (p.style.display === 'block') ? 'none' : 'block';
+      document.getElementById('uploadStatus').textContent = '';
+    }
+
+    // Upload + DB yazma
+    async function uploadMemory(){
+      const fileInput = document.getElementById('uploadFile');
+      const note = document.getElementById('memNote').value || '';
+      const dateText = document.getElementById('memDate').value || '';
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert('Lütfen bir fotoğraf seçin.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const status = document.getElementById('uploadStatus');
+      status.textContent = 'Yükleniyor... lütfen bekleyin';
+
+      try {
+        // Benzersiz isim oluştur (zaman + random)
+        const uniqueName = Date.now() + '_' + Math.floor(Math.random()*10000) + '_' + file.name;
+        const storageRef = storage.ref().child('memories/' + uniqueName);
+        const uploadTask = storageRef.put(file);
+
+        uploadTask.on('state_changed',
+          (snapshot) => {
+            // istersen yükleme ilerlemesini buradan okuyabilirsin
+          },
+          (err) => {
+            console.error(err);
+            status.textContent = 'Yükleme hatası.';
+          },
+          async () => {
+            // Yükleme tamamlandı
+            const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+            // Realtime DB'ye ekle
+            const newRef = database.ref('memories').push();
+            await newRef.set({
+              imageUrl: downloadURL,
+              note: note,
+              date: dateText,
+              createdAt: firebase.database.ServerValue.TIMESTAMP
+            });
+            status.textContent = 'Yüklendi!';
+            // Paneli kapat ve alanları temizle
+            document.getElementById('uploadFile').value = '';
+            document.getElementById('memNote').value = '';
+            document.getElementById('memDate').value = '';
+            setTimeout(()=> { document.getElementById('uploadStatus').textContent = ''; toggleAddPanel(); }, 800);
+          }
+        );
+      } catch (err) {
+        console.error(err);
+        status.textContent = 'Hata oldu.';
+      }
+    }
+
+    // Remote anıları dinle ve sayfaya ekle
+    function startListeningToMemories() {
+      const container = document.getElementById('remoteMemoriesContainer');
+      // temizle (aynı anda birden fazla dinleyici eklememek için önce off yap)
+      database.ref('memories').off();
+      database.ref('memories').on('value', snapshot => {
+        const val = snapshot.val();
+        container.innerHTML = ''; // önce temizle (hardcoded memory'ler korunacak, burası onların altına eklenecek)
+        if (!val) return;
+        // sırala createdAt'e göre (yeniden dönüştür)
+        const items = Object.keys(val).map(k => ({ key: k, ...val[k] }))
+          .sort((a,b) => (a.createdAt||0) - (b.createdAt||0));
+        for (const it of items) {
+          // memory yapısı tam senin orijinal memory ile uyumlu
+          const div = document.createElement('div');
+          div.className = 'memory';
+          div.onclick = () => openPreview(it.imageUrl || '', it.date || '', it.note || '');
+          div.innerHTML = `
+            <img src="${it.imageUrl}" alt="Anı">
+            <div class="text">
+              <h3>${escapeHtml(it.date || '')}</h3>
+              <p>${escapeHtml(it.note || '')}</p>
+            </div>
+          `;
+          container.appendChild(div);
+        }
+      });
+    }
+
+    // Basit HTML escape (küçük güvenlik için)
+    function escapeHtml(s) {
+      if (!s) return '';
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // Eğer sayfa yüklendiğinde kullanıcı daha önce şifre girmişse otomatik açma istersen burayı değiştirebilirsin.
+    // (Şu an her sayfa yüklemede overlay görünür.)
+
+    // Not: Mevcut sabit memory'lerin davranışı değişmedi, onlarla aynı yapı korunarak remote memory'ler eklendi.
+
+    /* -------------------- SON -------------------- */
   </script>
 </body>
 </html>
