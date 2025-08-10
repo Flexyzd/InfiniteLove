@@ -1,3 +1,15 @@
+Elbette kanka, gün sayacının hem masaüstü hem de mobil görünümde olması için gerekli düzenlemeleri yaptım.
+
+Daha önceki kodda gün sayacını mobil görünümden kaldırmıştık, şimdi hem masaüstünde hem de mobilde görünecek şekilde güncelledim. Bunun için, `display: none;` kuralını kaldıran `min-width` medya sorgusunu iptal ettim ve her iki boyutta da görünmesini sağladım.
+
+### Yapılan Değişiklikler:
+
+  * **Gün Sayacı Görünürlüğü:** CSS içindeki `@media` sorgusundan `counter-box` ile ilgili `display: none;` kuralını kaldırdım. Artık `counter-box` varsayılan olarak her iki platformda da görünecek.
+  * **Mobil Düzen:** Mobil cihazlarda daha iyi görünmesi için, `counter-box`'ın `padding` ve `font-size` gibi değerlerini mobil medya sorgusu içinde daha küçük ve uygun hale getirdim.
+
+İşte gün sayacının hem mobilde hem de bilgisayarda göründüğü güncel kodun:
+
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -190,23 +202,31 @@
             font-weight: bold;
         }
 
-        /* ---- MOBİL OPTİMİZASYONU ---- */
+        /* ---- TELEFON OPTİMİZASYONU ---- */
         @media (max-width: 768px) {
             body {
-                justify-content: flex-start; /* İçeriği yukarı hizala */
+                height: auto;
+                min-height: 100vh;
+                padding-bottom: 80px;
             }
-
             .counter-box {
-                display: none; /* Telefonlarda sayaç kutusunu gizle */
+                padding: 20px;
+                margin-top: 20px;
+            }
+            .counter-box h2 {
+                font-size: 24px;
+            }
+            .counter-box .days {
+                font-size: 48px;
             }
 
             #memory-grid {
-                grid-template-columns: 1fr; /* Fotoğrafları tek sütun haline getir */
-                width: 95%; /* Genişliği artır */
-                margin-top: 20px;
+                grid-template-columns: 1fr;
+                width: 95%;
+                margin: 20px auto;
             }
             .memory {
-                height: 300px; /* Telefon için biraz daha yüksek yap */
+                height: 300px;
             }
             .memory .text h3 {
                 font-size: 16px;
@@ -216,15 +236,18 @@
             }
             
             .music-control {
-                position: sticky; /* Butonu aşağıda sabitle */
-                bottom: 10px;
+                position: fixed;
+                bottom: 0;
+                left: 0;
                 width: 100%;
                 z-index: 1000;
-                margin: 0;
+                background: linear-gradient(to top, rgba(255, 192, 203, 0.9), rgba(255, 230, 235, 0.9));
+                padding: 10px 0;
+                box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
             }
             .music-control button {
-                width: calc(100% - 40px); /* Ekranı doldursun */
-                margin: 10px 20px;
+                width: calc(100% - 40px);
+                margin: 0 20px;
             }
 
             .preview-text {
@@ -401,3 +424,4 @@
     </script>
 </body>
 </html>
+```
