@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Geçen Gün Sayısı</title>
-
   <style>
-    /* ---- GENEL SAYFA TASARIMI ---- */
     body {
       margin: 0;
       padding: 0;
@@ -24,8 +22,6 @@
       filter: blur(10px);
       transition: filter 0.5s ease-in-out;
     }
-
-    /* ---- GÜN SAYACI KUTUSU ---- */
     .counter-box {
       background-color: rgba(255, 255, 255, 0.25);
       border-radius: 20px;
@@ -50,8 +46,6 @@
       font-weight: bold;
       color: #c2185b;
     }
-
-    /* ---- MÜZİK BUTONU ---- */
     .music-control button {
       background-color: #ff69b4;
       border: none;
@@ -64,12 +58,8 @@
       transition: background-color 0.3s;
       margin-top: 15px;
     }
-    .music-control button:hover {
-      background-color: #e0559e;
-    }
+    .music-control button:hover { background-color: #e0559e; }
     iframe#musicPlayer { display: none; }
-
-    /* ---- YENİ ANILAR KAPSAYICI ---- */
     #memory-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -78,8 +68,6 @@
       max-width: 1000px;
       margin: 20px auto 40px auto;
     }
-
-    /* ---- FOTOĞRAF KUTUSU ---- */
     .memory {
       position: relative;
       border-radius: 15px;
@@ -97,8 +85,7 @@
     }
     .memory .text {
       position: absolute;
-      bottom: 0;
-      left: 0;
+      bottom: 0; left: 0;
       width: 100%;
       background: linear-gradient(to top, rgba(255, 105, 180, 0.6), transparent);
       color: white;
@@ -108,14 +95,10 @@
     }
     .memory .text h3 { margin: 0; font-size: 14px; opacity: 0.9; }
     .memory .text p { margin: 0; font-size: 16px; font-weight: bold; }
-
-    /* ---- KALP ANİMASYONU ---- */
     .heart {
-      width: 20px;
-      height: 20px;
+      width: 20px; height: 20px;
       position: fixed;
-      bottom: 0;
-      left: 50%;
+      bottom: 0; left: 50%;
       transform: translateX(-50%);
       background-color: #ff69b4;
       clip-path: polygon(
@@ -133,8 +116,6 @@
       0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
       100% { transform: translateX(-50%) translateY(-100vh) scale(1.5); opacity: 0; }
     }
-
-    /* ---- FOTOĞRAF ÖNİZLEME MODALI ---- */
     .preview-modal {
       display: none;
       position: fixed;
@@ -155,16 +136,13 @@
     }
     .preview-text {
       position: absolute;
-      bottom: 40px;
-      left: 40px;
+      bottom: 40px; left: 40px;
       color: white;
       text-align: left;
       max-width: 80%;
     }
     .preview-text h3 { margin: 0; font-size: 18px; opacity: 0.8; }
     .preview-text p { margin: 5px 0 0 0; font-size: 22px; font-weight: bold; }
-
-    /* ---- TELEFON OPTİMİZASYONU ---- */
     @media (max-width: 768px) {
       body { height: auto; min-height: 100vh; padding-bottom: 80px; }
       .counter-box { padding: 20px; margin-top: 20px; }
@@ -183,15 +161,13 @@
 </head>
 <body class="blurred">
 
-  <!-- Şifre ekranı -->
   <div id="passwordOverlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; z-index:1000000; flex-direction:column; color:white;">
     <h2 style="margin:0 0 12px 0;">Siteye Giriş</h2>
-    <input id="passwordInput" type="password" placeholder="Şifreyi gir (Çıkma Tarihimiz)" style="padding:10px; font-size:16px; border-radius:8px; border:none; text-align:center;">
+    <input id="passwordInput" type="password" placeholder="Şifreyi gir (1111)" style="padding:10px; font-size:16px; border-radius:8px; border:none; text-align:center;">
     <div style="height:12px"></div>
     <button onclick="checkPassword()" style="background:#ff69b4;color:white;border:none;padding:10px 16px;border-radius:10px;cursor:pointer;">Giriş Yap</button>
   </div>
 
-  <!-- Gün sayacı -->
   <div class="counter-box">
     <h2>Seninle İlk Günden Bu Yana Geçirdiğimiz Süre</h2>
     <div class="days" id="dayCount">0 gün</div>
@@ -200,46 +176,38 @@
     </div>
   </div>
 
-  <!-- Fotoğraf Galerisi -->
   <div id="memory-grid">
     <div class="memory" onclick="openPreview('IMG_3466.jpeg','16 Mart 2024 18:44','Bugünden Sonra Her Şey Çok Değişti Ve Birbirimizi Çok İyi Tanımaya Başladık 😏')">
-      <img src="IMG_3466.jpeg" alt="İlk tatilimiz">
-      <div class="text"><h3>16 Mart 2024 18:44</h3><p>Bugünden Sonra Her Şey Çok Değişti Ve Birbirimizi Çok İyi Tanımaya Başladık 😏</p></div>
+      <img src="IMG_3466.jpeg"><div class="text"><h3>16 Mart 2024 18:44</h3><p>Bugünden Sonra Her Şey Çok Değişti Ve Birbirimizi Çok İyi Tanımaya Başladık 😏</p></div>
     </div>
     <div class="memory" onclick="openPreview('IMG_8615.jpeg','2 Eylül 2024 20:09','İlk Yaz Tatilimizi Hatırlıyor musun Bebeğim 🤎')">
-      <img src="IMG_8615.jpeg" alt="İlk tatilimiz">
-      <div class="text"><h3>2 Eylül 2024 20:09</h3><p>İlk Yaz Tatilimizi Hatırlıyor musun Bebeğim 🤎</p></div>
+      <img src="IMG_8615.jpeg"><div class="text"><h3>2 Eylül 2024 20:09</h3><p>İlk Yaz Tatilimizi Hatırlıyor musun Bebeğim 🤎</p></div>
     </div>
     <div class="memory" onclick="openPreview('IMG_2218.JPEG','23 Aralık 2023 15:18','Sana Bisiklet Sürmeyi öğrettiğim Gün')">
-      <img src="IMG_2218.JPEG" alt="Bisiklet sürme anısı">
-      <div class="text"><h3>23 Aralık 2023 15:18</h3><p>Sana Bisiklet Sürmeyi öğrettiğim Gün</p></div>
+      <img src="IMG_2218.JPEG"><div class="text"><h3>23 Aralık 2023 15:18</h3><p>Sana Bisiklet Sürmeyi öğrettiğim Gün</p></div>
     </div>
     <div class="memory" onclick="openPreview('c234aa18-98bd-46ca-93f7-face2d072044.JPEG','28 Nisan 2024 01:19','Bu Açıklamayı Sana Bırakıyorum Wp yaz')">
-      <img src="c234aa18-98bd-46ca-93f7-face2d072044.JPEG" alt="Anı fotoğrafı">
-      <div class="text"><h3>28 Nisan 2024 01:19</h3><p>Bu Açıklamayı Sana Bırakıyorum Wp yaz</p></div>
+      <img src="c234aa18-98bd-46ca-93f7-face2d072044.JPEG"><div class="text"><h3>28 Nisan 2024 01:19</h3><p>Bu Açıklamayı Sana Bırakıyorum Wp yaz</p></div>
     </div>
     <div class="memory" onclick="openPreview('IMG_6372.JPEG','10 Haziran 2024 19:35','Ne Olursa Olsun Her Zaman Yanındayım🤍')">
-      <img src="IMG_6372.JPEG" alt="Anı fotoğrafı">
-      <div class="text"><h3>10 Haziran 2024 19:35</h3><p>Ne Olursa Olsun Her Zaman Yanındayım🤍</p></div>
+      <img src="IMG_6372.JPEG"><div class="text"><h3>10 Haziran 2024 19:35</h3><p>Ne Olursa Olsun Her Zaman Yanındayım🤍</p></div>
     </div>
     <div class="memory" onclick="openPreview('IMG_6182.JPEG','1 Haziran 2024 14:53','İlk Pikniğimiz')">
-      <img src="IMG_6182.JPEG" alt="İlk pikniğimiz">
-      <div class="text"><h3>1 Haziran 2024 14:53</h3><p>İlk Pikniğimiz</p></div>
+      <img src="IMG_6182.JPEG"><div class="text"><h3>1 Haziran 2024 14:53</h3><p>İlk Pikniğimiz</p></div>
     </div>
     <div class="memory" onclick="openPreview('IMG_5675.JPEG','5 Eylül 2025 19:51','Tek Başımıza Denizden Sonra İlk Restaurant Yemeğimiz😍')">
-      <img src="IMG_5675.JPEG" alt="Yemek anısı">
-      <div class="text"><h3>5 Eylül 2025 19:51</h3><p>Tek Başımıza Denizden Sonra İlk Restaurant Yemeğimiz😍</p></div>
+      <img src="IMG_5675.JPEG"><div class="text"><h3>5 Eylül 2025 19:51</h3><p>Tek Başımıza Denizden Sonra İlk Restaurant Yemeğimiz😍</p></div>
     </div>
     <div class="memory" onclick="openPreview('ssstik.io_1757177881018.JPEG','5 Eylül 2025 19:27','EN İYİ FOTOĞRAFIMIZ SANIRIM')">
-      <img src="ssstik.io_1757177881018.JPEG" alt="En iyi fotoğrafımız">
-      <div class="text"><h3>5 Eylül 2025 19:27</h3><p>EN İYİ FOTOĞRAFIMIZ SANIRIM</p></div>
+      <img src="ssstik.io_1757177881018.JPEG"><div class="text"><h3>5 Eylül 2025 19:27</h3><p>EN İYİ FOTOĞRAFIMIZ SANIRIM</p></div>
     </div>
   </div>
 
-  <!-- Müzik -->
-  <iframe id="musicPlayer" width="0" height="0" src="https://www.youtube.com/embed/fExyfJlgkb4?enablejsapi=1&start=48" frameborder="0" allow="autoplay"></iframe>
+  <iframe id="musicPlayer"
+    width="0" height="0"
+    src="https://www.youtube.com/embed/fExyfJlgkb4?enablejsapi=1&start=48"
+    frameborder="0" allow="autoplay"></iframe>
 
-  <!-- Fotoğraf önizleme -->
   <div id="previewModal" class="preview-modal" onclick="closePreview()">
     <img id="previewImage" src="" alt="Preview">
     <div class="preview-text">
@@ -249,58 +217,54 @@
   </div>
 
   <script>
-    /* Gün sayacı */
     const startDate = new Date('2021-11-11');
-    function updateDayCount() {
+    function updateDayCount(){
       const today = new Date();
-      const diffDays = Math.floor((today - startDate) / (1000*60*60*24));
-      document.getElementById('dayCount').textContent = `${diffDays} gün`;
+      const diff = today - startDate;
+      const days = Math.floor(diff / (1000*60*60*24));
+      document.getElementById('dayCount').textContent = `${days} gün`;
     }
     updateDayCount();
 
-    /* Kalp animasyonu */
-    function createHeart() {
-      const heart = document.createElement('div');
+    function createHeart(){
+      const heart=document.createElement('div');
       heart.classList.add('heart');
-      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.left=Math.random()*100+'vw';
       document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 5000);
+      setTimeout(()=>heart.remove(),5000);
     }
-    setInterval(createHeart, 300);
+    setInterval(createHeart,300);
 
-    /* Müzik kontrol */
-    let player, isPlaying=false;
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('musicPlayer', {
-        events: { 'onReady': (event)=>{} }
-      });
+    let player; let isPlaying=false;
+    function onYouTubeIframeAPIReady(){
+      player=new YT.Player('musicPlayer',{events:{'onReady':()=>{}}});
     }
-    function toggleMusic() {
+    function toggleMusic(){
       const btn=document.getElementById('musicBtn');
-      if (player && isPlaying) {
-        player.pauseVideo(); btn.textContent='Başlat'; isPlaying=false;
-      } else if (player) {
-        player.playVideo(); btn.textContent='Durdur'; isPlaying=true;
-      }
+      if(player && isPlaying){ player.pauseVideo(); btn.textContent='Başlat'; isPlaying=false; }
+      else if(player){ player.playVideo(); btn.textContent='Durdur'; isPlaying=true; }
     }
-    const tag=document.createElement('script'); tag.src="https://www.youtube.com/iframe_api"; document.body.appendChild(tag);
+    const tag=document.createElement('script');
+    tag.src="https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
 
-    /* Fotoğraf önizleme */
-    function openPreview(src,date,caption) {
+    function openPreview(src,date,caption){
       document.getElementById('previewImage').src=src;
       document.getElementById('previewDate').textContent=date;
       document.getElementById('previewCaption').textContent=caption;
       document.getElementById('previewModal').style.display='flex';
     }
-    function closePreview() { document.getElementById('previewModal').style.display='none'; }
+    function closePreview(){ document.getElementById('previewModal').style.display='none'; }
 
-    /* Şifre kontrol */
-    function checkPassword() {
+    function checkPassword(){
       const val=document.getElementById('passwordInput').value;
-      if (val==='1111') {
+      if(val==='1111'){
         document.getElementById('passwordOverlay').style.display='none';
         document.body.classList.remove('blurred');
-        if (player) { try{player.seekTo(48); player.playVideo(); isPlaying=true; document.getElementById('musicBtn').textContent='Durdur';}catch(e){} }
+        if(player){
+          try{ player.seekTo(48); player.playVideo(); isPlaying=true; document.getElementById('musicBtn').textContent='Durdur'; }
+          catch(e){ console.log(e); }
+        }
       } else { alert('Şifre yanlış!'); }
     }
   </script>
